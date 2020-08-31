@@ -29,6 +29,7 @@ def data(
   )
 
 def empty(
+  body,
   status=200,
   headers=None,
   content_type='application/json'
