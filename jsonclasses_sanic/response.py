@@ -14,3 +14,28 @@ def json(
     status=status,
     content_type=content_type
   )
+
+def data(
+  body,
+  status=200,
+  headers=None,
+  content_type='application/json'
+):
+  return json(
+    { 'data': body },
+    status=status,
+    headers=headers,
+    content_type=content_type
+  )
+
+def empty(
+  status=200,
+  headers=None,
+  content_type='application/json'
+):
+  return json(
+    {},
+    status=status,
+    headers=headers,
+    content_type=content_type
+  )
