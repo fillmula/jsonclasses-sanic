@@ -8,7 +8,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(name='jsonclasses-sanic',
-  version='0.1.8',
+  version='0.1.9',
   description='jsonclasses integration with sanic.',
   long_description=README,
   long_description_content_type="text/markdown",

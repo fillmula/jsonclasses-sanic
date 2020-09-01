@@ -30,7 +30,7 @@ def only_respond_middleware(content_types):
 
 only_respond_json_middleware = only_respond_middleware('application/json')
 
-async def only_handle_middleware(content_types):
+def only_handle_middleware(content_types):
   async def only_handle_content_types(request: Request):
     await only_accept_middleware(content_types)(request)
     await only_respond_middleware(content_types)(request)
