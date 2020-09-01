@@ -15,7 +15,7 @@ class NotAcceptableException(Exception):
     self.message = f'Accept \'{accept}\' is not supported.'
     super().__init__(self.message)
 
-async def exception_handler(request: Request, exception: Exception):
+def exception_handler(request: Request, exception: Exception):
   code = exception.status_code if isinstance(exception, SanicException) else 500
   code = 415 if isinstance(exception, UnsupportedMediaTypeException) else code
   code = 406 if isinstance(exception, NotAcceptableException) else code
