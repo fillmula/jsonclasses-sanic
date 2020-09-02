@@ -7,8 +7,10 @@ def only_accept_middleware(content_types):
   async def only_accept_content_types(request: Request):
     if request.method in ['POST', 'PATCH', 'PUT']:
       content_type = request.headers['content-type']
-      if content_type not in content_types:
-        raise UnsupportedMediaTypeException(content_type)
+      for supported_content_type in content_types:
+        if content_type.startswith(supported_content_type):
+          return
+      raise UnsupportedMediaTypeException(content_type)
   return only_accept_content_types
 
 only_accept_json_middleware = only_accept_middleware('application/json')
