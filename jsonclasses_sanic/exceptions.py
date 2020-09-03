@@ -24,6 +24,6 @@ def exception_handler(request: Request, exception: Exception):
   return json({
     'error': {
       'type': exception.__class__.__name__,
-      'message': exception.message if hasattr(exception, 'message') else repr(exception)
+      'message': exception.message if hasattr(exception, 'message') else str(exception)
     }
   }, status=code)
