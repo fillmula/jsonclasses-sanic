@@ -1,5 +1,5 @@
-# jsonclasses-sanic
-jsonclasses integration with sanic
+# JSON Classes Sanic
+JSON Classes integration with Sanic.
 
 ## Prerequisites
 
