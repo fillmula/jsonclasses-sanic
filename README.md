@@ -13,8 +13,10 @@ Install `jsonclasses-sanic` with `pip`.
 pip install jsonclasses-sanic
 ```
 
-## Usage
+## Documentation
 
-
+Read on bla bla bla.
 
 ## License
+
+[MIT License](https://github.com/WiosoftCrafts/jsonclasses-sanic/blob/master/LICENSE)
