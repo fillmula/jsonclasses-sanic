@@ -20,5 +20,4 @@ setup(name='jsonclasses-sanic',
       url='https://github.com/Wiosoft-Crafts/jsonclasses-sanic',
       include_package_data=True,
       python_requires='>=3.8',
-      install_requires=[]
-      )
+      install_requires=[])
