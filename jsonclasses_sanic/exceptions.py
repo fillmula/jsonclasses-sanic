@@ -1,5 +1,6 @@
 from traceback import extract_tb
 from os import getcwd, path
+import traceback
 from sanic.request import Request
 from sanic.response import json
 from sanic.exceptions import SanicException
@@ -34,7 +35,7 @@ def exception_handler(request: Request, exception: Exception):
     code = 400 if isinstance(exception, ValidationException) else code
     if request.app.debug:
         if code == 500:
-            print(repr(exception))
+            traceback.print_exception(exception)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
@@ -60,7 +61,7 @@ def exception_handler(request: Request, exception: Exception):
             }, status=code)
     else:
         if code == 500:
-            print(repr(exception))
+            traceback.print_exception(exception)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',

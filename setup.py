@@ -8,7 +8,7 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(name='jsonclasses-sanic',
-      version='1.0.1',
+      version='1.0.2',
       description='JSON Classes integration with sanic.',
       long_description=README,
       long_description_content_type="text/markdown",
@@ -19,5 +19,5 @@ setup(name='jsonclasses-sanic',
       zip_safe=False,
       url='https://github.com/Wiosoft-Crafts/jsonclasses-sanic',
       include_package_data=True,
-      python_requires='>=3.8',
+      python_requires='>=3.9',
       install_requires=[])
