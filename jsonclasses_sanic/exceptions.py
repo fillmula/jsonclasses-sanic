@@ -35,7 +35,7 @@ def exception_handler(request: Request, exception: Exception):
     code = 400 if isinstance(exception, ValidationException) else code
     if request.app.debug:
         if code == 500:
-            traceback.print_last()
+            traceback.print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
@@ -61,7 +61,7 @@ def exception_handler(request: Request, exception: Exception):
             }, status=code)
     else:
         if code == 500:
-            traceback.print_last()
+            traceback.print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
