@@ -32,13 +32,46 @@ def exception_handler(request: Request, exception: Exception):
     code = 406 if isinstance(exception, NotAcceptableException) else code
     code = 404 if isinstance(exception, ObjectNotFoundException) else code
     code = 400 if isinstance(exception, ValidationException) else code
-    return json({
-        'error': remove_none({
-            'type': exception.__class__.__name__,
-            'message': str(exception),
-            'fields': (exception.keypath_messages
-                       if isinstance(exception, ValidationException)
-                       else None),
-            'traceback': [f'file {path.relpath(f.filename, getcwd())}:{f.lineno} in {f.name}' for f in extract_tb(exception.__traceback__)],  # noqa: E501
-        })
-    }, status=code)
+    if request.app.debug:
+        if code == 500:
+            print(exception)
+            return json({
+                'error': remove_none({
+                    'type': 'Internal Server Error',
+                    'message': 'There is an internal server error.',
+                    'error_type': exception.__class__.__name__,
+                    'error_message': str(exception),
+                    'fields': (exception.keypath_messages
+                            if isinstance(exception, ValidationException)
+                            else None),
+                    'traceback': [f'file {path.relpath(f.filename, getcwd())}:{f.lineno} in {f.name}' for f in extract_tb(exception.__traceback__)],  # noqa: E501
+                })
+            }, status=code)
+        else:
+            return json({
+                'error': remove_none({
+                    'type': exception.__class__.__name__,
+                    'message': str(exception),
+                    'fields': (exception.keypath_messages
+                            if isinstance(exception, ValidationException)
+                            else None),
+                    'traceback': [f'file {path.relpath(f.filename, getcwd())}:{f.lineno} in {f.name}' for f in extract_tb(exception.__traceback__)],  # noqa: E501
+                })
+            }, status=code)
+    else:
+        if code == 500:
+            print(exception)
+            return json({
+                'error': remove_none({
+                    'type': 'Internal Server Error',
+                    'message': 'There is an internal server error.'
+                })
+            }, status=500)
+        else:
+            return json({
+                'type': exception.__class__.__name__,
+                'message': str(exception),
+                'fields': (exception.keypath_messages
+                        if isinstance(exception, ValidationException)
+                        else None)
+            }, status=code)
