@@ -34,7 +34,7 @@ def exception_handler(request: Request, exception: Exception):
     code = 400 if isinstance(exception, ValidationException) else code
     if request.app.debug:
         if code == 500:
-            print(exception)
+            print(repr(exception))
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
@@ -60,7 +60,7 @@ def exception_handler(request: Request, exception: Exception):
             }, status=code)
     else:
         if code == 500:
-            print(exception)
+            print(repr(exception))
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
