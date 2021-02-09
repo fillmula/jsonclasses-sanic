@@ -9,6 +9,6 @@ def recursive_snake_keys(json: T) -> T:
     elif isinstance(json, list):
         return [recursive_snake_keys(v) for v in json]
     elif isinstance(json, dict):
-        return {underscore(k): recursive_snake_keys(v) for k, v in json}
+        return {underscore(k): recursive_snake_keys(v) for k, v in json.items()}
     else:
         return json
