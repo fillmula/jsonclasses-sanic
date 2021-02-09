@@ -2,7 +2,7 @@ from functools import wraps
 from .middlewares import (only_accept_middleware, only_respond_middleware,
                           only_handle_middleware, only_accept_json_middleware,
                           only_respond_json_middleware)
-
+from .utils import recursive_snake_keys
 
 def only_accept(content_types):
     def only_accept_content_type(handler):
@@ -55,5 +55,13 @@ def only_handle_json(handler):
     async def wrapped(request, *args, **kwargs):
         await only_accept_json_middleware(request)
         await only_respond_json_middleware(request)
+        return await handler(request, *args, **kwargs)
+    return wrapped
+
+
+def underscore_request_json(handler):
+    @wraps(handler)
+    async def wrapped(request, *args, **kwargs):
+        request.json = recursive_snake_keys(request.json)
         return await handler(request, *args, **kwargs)
     return wrapped
