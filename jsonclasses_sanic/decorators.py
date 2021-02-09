@@ -62,6 +62,6 @@ def only_handle_json(handler):
 def underscore_request_json(handler):
     @wraps(handler)
     async def wrapped(request, *args, **kwargs):
-        request.json = recursive_snake_keys(request.json)
+        request.parsed_json = recursive_snake_keys(request.json)
         return await handler(request, *args, **kwargs)
     return wrapped
