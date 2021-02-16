@@ -1,10 +1,11 @@
-from traceback import extract_tb
+from traceback import extract_tb, print_exception
 from os import getcwd, path
-import traceback
 from sanic.request import Request
 from sanic.response import json
 from sanic.exceptions import SanicException
-from jsonclasses.exceptions import ObjectNotFoundException, ValidationException
+from jsonclasses.exceptions import (ObjectNotFoundException,
+                                    ValidationException,
+                                    UniqueConstraintException)
 
 
 class UnsupportedMediaTypeException(Exception):
@@ -33,9 +34,11 @@ def exception_handler(request: Request, exception: Exception):
     code = 406 if isinstance(exception, NotAcceptableException) else code
     code = 404 if isinstance(exception, ObjectNotFoundException) else code
     code = 400 if isinstance(exception, ValidationException) else code
+    code = 400 if isinstance(exception, UniqueConstraintException) else code
+
     if request.app.debug:
         if code == 500:
-            traceback.print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
+            print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
@@ -43,8 +46,8 @@ def exception_handler(request: Request, exception: Exception):
                     'error_type': exception.__class__.__name__,
                     'error_message': str(exception),
                     'fields': (exception.keypath_messages
-                            if isinstance(exception, ValidationException)
-                            else None),
+                               if (isinstance(exception, ValidationException) or isinstance(exception, UniqueConstraintException))
+                               else None),
                     'traceback': [f'file {path.relpath(f.filename, getcwd())}:{f.lineno} in {f.name}' for f in extract_tb(exception.__traceback__)],  # noqa: E501
                 })
             }, status=code)
@@ -54,14 +57,14 @@ def exception_handler(request: Request, exception: Exception):
                     'type': exception.__class__.__name__,
                     'message': str(exception),
                     'fields': (exception.keypath_messages
-                            if isinstance(exception, ValidationException)
-                            else None),
+                               if (isinstance(exception, ValidationException) or isinstance(exception, UniqueConstraintException))
+                               else None),
                     'traceback': [f'file {path.relpath(f.filename, getcwd())}:{f.lineno} in {f.name}' for f in extract_tb(exception.__traceback__)],  # noqa: E501
                 })
             }, status=code)
     else:
         if code == 500:
-            traceback.print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
+            print_exception(etype=type[exception], value=exception, tb=exception.__traceback__)
             return json({
                 'error': remove_none({
                     'type': 'Internal Server Error',
@@ -73,6 +76,6 @@ def exception_handler(request: Request, exception: Exception):
                 'type': exception.__class__.__name__,
                 'message': str(exception),
                 'fields': (exception.keypath_messages
-                        if isinstance(exception, ValidationException)
+                        if (isinstance(exception, ValidationException) or isinstance(exception, UniqueConstraintException))
                         else None)
             }, status=code)
