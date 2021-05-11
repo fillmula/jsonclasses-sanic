@@ -8,16 +8,16 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(name='jsonclasses-sanic',
-      version='1.2.1',
+      version='2.3.0',
       description='JSON Classes integration with sanic.',
       long_description=README,
       long_description_content_type="text/markdown",
-      author='Wiosoft Crafts',
+      author='Fillmula Inc.',
       author_email='wiosoftvictor@163.com',
       license='MIT',
       packages=find_packages(exclude=("tests")),
       zip_safe=False,
-      url='https://github.com/Wiosoft-Crafts/jsonclasses-sanic',
+      url='https://github.com/fillmula/jsonclasses-sanic',
       include_package_data=True,
       python_requires='>=3.9',
       install_requires=[])
