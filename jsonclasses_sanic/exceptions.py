@@ -73,9 +73,11 @@ def exception_handler(request: Request, exception: Exception):
             }, status=500)
         else:
             return json({
-                'type': exception.__class__.__name__,
-                'message': str(exception),
-                'fields': (exception.keypath_messages
-                        if (isinstance(exception, ValidationException) or isinstance(exception, UniqueConstraintException))
-                        else None)
+                'error': remove_none({
+                    'type': exception.__class__.__name__,
+                    'message': str(exception),
+                    'fields': (exception.keypath_messages
+                               if (isinstance(exception, ValidationException) or isinstance(exception, UniqueConstraintException))
+                               else None)
+                })
             }, status=code)
