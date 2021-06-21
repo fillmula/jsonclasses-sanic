@@ -8,6 +8,8 @@ def only_accept_middleware(content_types):
 
     async def only_accept_content_types(request: Request):
         if request.method in ['POST', 'PATCH', 'PUT']:
+            if 'content-type' not in request.headers.keys():
+                return
             content_type = request.headers['content-type']
             for supported_content_type in content_types:
                 if content_type.startswith(supported_content_type):
@@ -24,6 +26,8 @@ def only_respond_middleware(content_types):
         content_types = [content_types]
 
     async def only_respond_content_types(request: Request):
+        if 'accept' not in request.headers.keys():
+            return
         accept = request.headers['accept']
         if accept is None:
             return
