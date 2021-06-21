@@ -26,6 +26,8 @@ def only_respond_middleware(content_types):
         content_types = [content_types]
 
     async def only_respond_content_types(request: Request):
+        if 'accept' not in request.headers.keys():
+            return
         accept = request.headers['accept']
         if accept is None:
             return
